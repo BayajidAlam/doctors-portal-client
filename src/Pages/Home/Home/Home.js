@@ -1,4 +1,5 @@
 import React from 'react';
+import Form from '../../../assets/Form/Form';
 import Banner from '../Banner/Banner';
 import ExtraData from '../ExtraData/ExtraData';
 import InfoCard from '../InfoCard/InfoCard';
@@ -15,6 +16,7 @@ const Home = () => {
           <ExtraData></ExtraData>
           <MakeAppointment></MakeAppointment>
           <Testimonial></Testimonial>
+          <Form></Form>
     </div>
   );
 };
