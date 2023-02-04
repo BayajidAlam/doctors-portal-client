@@ -1,26 +1,48 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../../context/AuthProvider";
 
-const menuItem = (
-  <>
-    <li>
-      <Link to="/">Home</Link>
-    </li>
-    <li>
-      <Link to="/appointment">Appointment</Link>
-    </li>
-    <li>
-      <Link to="/about">About</Link>
-    </li>
-    <li>
-      <Link to="/reviews">Reviews</Link>
-    </li>
-    <li>
-      <Link to="/contact-us">Contact Us</Link>
-    </li>
-  </>
-);
 const NavBar = () => {
+  const { user, signOutUser } = useContext(AuthContext);
+
+  const handleSignOut = () => {
+    signOutUser()
+    .then(()=>{
+
+    })
+    .catch(err=>{
+
+    })
+  }
+
+  const menuItem = (
+    <>
+      <li>
+        <Link to="/">Home</Link>
+      </li>
+      <li>
+        <Link to="/appointment">Appointment</Link>
+      </li>
+      <li>
+        <Link to="/about">About</Link>
+      </li>
+      {user?.uid ? (
+       <>
+         <li>
+         <Link to="/dashboard">Dashboard</Link>
+        </li>
+         <li>
+          <button onClick={handleSignOut}>SignOut</button>
+        </li>
+       </>
+      ) : (
+        <li>
+          <Link to="/login">Login</Link>
+        </li>
+      )}
+    </>
+  );
+
   return (
     <div className="navbar bg-base-100 flex justify-between">
       <div className="navbar-start">
@@ -45,17 +67,15 @@ const NavBar = () => {
             tabIndex={0}
             className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
           >
-              {
-                menuItem
-              }
+            {menuItem}
           </ul>
         </div>
-        <Link to='/</div>' className="btn btn-ghost normal-case text-xl">Doctors Hub</Link>
+        <Link to="/</div>" className="btn btn-ghost normal-case text-xl">
+          Doctors Hub
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          {menuItem}
-        </ul>
+        <ul className="menu menu-horizontal px-1">{menuItem}</ul>
       </div>
     </div>
   );
