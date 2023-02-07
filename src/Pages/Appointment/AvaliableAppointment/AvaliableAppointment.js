@@ -2,21 +2,27 @@ import { async } from "@firebase/util";
 import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import Loading from "../../Shared/Loading/Loading";
 import BookingModal from "../BookingModal/BookingModal";
 import AppointmentOptions from "./AppointmentOptions";
 
 const AvaliableAppointment = ({ selectedDate }) => {
   // const [appointmentOptions, setAppointmentOptions] = useState([]);
   const [treatment, setTreatment] = useState(null);
-
-  const {data:appointmentOptions=[]} = useQuery({
-    queryKey: ['appointmentOptions'],
+  const date = format(selectedDate,'PP')
+  
+  const {data:appointmentOptions=[],refetch,isLoading} = useQuery({
+    queryKey: ['appointmentOptions',date],
     queryFn: async () =>{
-      const res = await fetch('http://localhost:5000/appointmentOptions')
+      const res = await fetch(`http://localhost:5000/appointmentOptions?date=${date}`)
       const data = await res.json()
       return data
     }
   })
+
+  if(isLoading){
+    return <Loading></Loading>
+  }
   // const { data:appointmentOptions=[], isLoading } = useQuery({
   //   queryKey: ['appointmentOptions'],
   //   queryFn: () => fetch('http://localhost:5000/appointmentOptions')
@@ -41,6 +47,7 @@ const AvaliableAppointment = ({ selectedDate }) => {
       treatment={treatment}
       selectedDate={selectedDate}
       setTreatment={setTreatment}
+      refetch={refetch}
       ></BookingModal>}
     </section>
   );
