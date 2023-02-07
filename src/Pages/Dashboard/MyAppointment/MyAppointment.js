@@ -1,7 +1,7 @@
-import { async } from '@firebase/util';
 import React, { useContext } from 'react';
 import { useQuery } from 'react-query';
 import { AuthContext } from '../../../context/AuthProvider';
+import { Link } from "react-router-dom";
 
 const MyAppointment = () => {
   const { user } = useContext(AuthContext);
@@ -33,6 +33,7 @@ const MyAppointment = () => {
         <th>Treatment</th>
         <th>Date</th>
         <th>Time</th>
+        <th>Pay</th>
       </tr>
     </thead>
     <tbody>
@@ -46,6 +47,14 @@ const MyAppointment = () => {
       <td>{booking.treatment}</td>
       <td>{booking.appointmentDate}</td>
       <td>{booking.slot}</td>
+      <td>
+        {
+          booking.price && !booking.paid && <Link to={`/dashboard/payment/${booking._id}`}><button className='btn btn-sm btn-primary'>{booking.price}</button></Link>
+        }
+        {
+          booking.price && booking.paid && <span className='text-primary'>Paid</span>
+        }
+        </td>
     </tr>)
     }
     </tbody>
